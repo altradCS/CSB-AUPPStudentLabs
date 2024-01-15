@@ -92,7 +92,8 @@ class SchoolAssessmentSystem:
 school_system = SchoolAssessmentSystem()
 
 # Process data
-school_system.process_data('test.csv')
+data_process = school_system.process_data('test.csv')
+print(f"Data Process Result:\n{data_process}")
 
 # Transfer data
 merged_data = school_system.transfer_data(
@@ -103,6 +104,10 @@ print(f"Merge Result:\n{merged_data}")
 web_data_result = school_system.fetch_web_data(
     'https://www.aupp.edu.kh/assessment')
 print(f"Web Data Result:\n{web_data_result}")
+
+# Analyze content
+analysis_result = school_system.analyze_content()
+print(f"Analysis Result:\n{analysis_result}")
 
 # Generate summary
 summary = school_system.generate_summary()
