@@ -112,3 +112,6 @@ print(f"Analysis Result:\n{analysis_result}")
 # Generate summary
 summary = school_system.generate_summary()
 print(f"Summary Result:\n{summary}")
+
+if __name__ == '__main__':
+    
