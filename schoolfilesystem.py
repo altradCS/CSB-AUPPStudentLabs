@@ -128,7 +128,7 @@ class SchoolAssessmentSystem:
             return 'No data to analyze. Please process data first.'
         try:
             numeric_data = self.data.select_dtypes(include='number')
-            analysis_result = numeric_data.describe().to_string()
+            analysis_result = numeric_data.describe()
             return analysis_result
         except ValueError:
             return 'Data contains non-numeric values. Please process data again.'
@@ -137,34 +137,30 @@ class SchoolAssessmentSystem:
         if self.data is None:
             return 'No data to summarize. Please process data first.'
         try:
-            numeric_data = self.data.select_dtypes(include='number')
-            summary = {
-                'Mean': numeric_data.mean().to_dict(),
-                'Median': numeric_data.median().to_dict()
-            }
-            # summary_result = {f"""
-            #     School Assessment Summary Report:
+            data = self.analyze_content()
+            summary_result = f"""
+                School Assessment Summary Report:
 
-            #     1. Overall Performance of Student A:
-            #     - Average score: {summary['Mean']['Score']}
-            #     - Top-performing class: {summary['Mean']['Class']}
+                1. Overall Performance of Student A:
+                - Average score: {data['Math']['mean']}
+                - Top-performing class:
 
-            #     2. Subject-wise Analysis:
-            #     - Mathematics: Improved by {summary[100-'Score']}% compared to the last assessment.
-            #     - Science: Consistent performance across all classes.
+                2. Subject-wise Analysis:
+                - Mathematics: Improved by compared to the last assessment.
+                - Science: Consistent performance across all classes.
 
-            #     3. Notable Observations:
-            #     - Grade {summary[max]} shows a significant improvement in English proficiency.
+                3. Notable Observations:
+                - Grade shows a significant improvement in English proficiency.
 
-            #     4. Web Data Insights:
-            #     - Online participation: 95% of students accessed assessment resources online.
+                4. Web Data Insights:
+                - Online participation: 95% of students accessed assessment resources online.
 
-            #     5. Recommendations:
-            #     - Consider additional support for Grade 9B in Mathematics.
+                5. Recommendations:
+                - Consider additional support for Grade 9B in Mathematics.
 
-            #     Report generated on: 2024-01-14"""
-            #                   }
-            return summary
+                Report generated on: 2024-01-14"""
+
+            return summary_result
         except ValueError:
             return 'Data contains non-numeric values. Please process data again.'
         except Exception as e:
@@ -193,6 +189,5 @@ if __name__ == '__main__':
     print(f"Analysis Result:\n{analysis_result}")
 
     # Generate summary
-    summary = school_system.generate_summary()
-    print(f"Summary Result:\n{summary}")
-    # print(f"{summary_result}")
+    summary_result = school_system.generate_summary()
+    print(f"{summary_result}")
