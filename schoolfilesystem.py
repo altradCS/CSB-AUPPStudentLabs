@@ -87,6 +87,10 @@ class SchoolAssessmentSystem:
             return 'F'
 
     def transfer_data(self, criteria='merge', data_from_another_source=None, output_filename='exported_data.csv', output_format='csv'):
+        # header = [['Class', 'Average Score', 'Top-performing Student', 'Top-performing Subject', 'Top-performing Class', 'Lowest-performing Student', 'Lowest-performing Class']]
+        # data = []
+        # for file in 
+        
         try:
             if criteria == 'merge' and data_from_another_source is not None:
                 if isinstance(self.data, pd.DataFrame):
