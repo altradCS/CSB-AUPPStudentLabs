@@ -11,7 +11,7 @@ Users can create unlimited playlists.
 Each playlist can contain any number of songs, but a song cannot be added multiple times to the same playlist.
 Songs can be added, removed, or reordered within playlists.
 The app should display songs in the order they were added to the playlist.
-
+d
 Which data structure model(s) would you choose to implement the music library and playlist features? Explain your choices, considering the characteristics of each data structure and the specific requirements of the application.
 
 Data structures to consider:
@@ -78,14 +78,12 @@ class Song:
 
 class MusicLibrary:
     def __init__(self):
-        self.songs = {}  # Dictionary to store songs by unique identifier
-        # Dictionary to store song IDs by artist for quick retrieval
+        self.songs = {}  # dictionary to store songs by unique identifier
+        # dictionary to store song ids by artist for quick retrieval
         self.song_ids_by_artist = {}
-        # Dictionary to store song IDs by album for quick retrieval
         self.song_ids_by_album = {}
-        # Dictionary to store song IDs by genre for quick retrieval
         self.song_ids_by_genre = {}
-        self.unique_song_ids = set()  # Set to prevent duplicate entries
+        self.unique_song_ids = set()  # set to prevent duplicate song entries
 
     def add_song(self, song):
         song_id = f"{song.artist}_{song.title}"
@@ -93,14 +91,14 @@ class MusicLibrary:
             self.songs[song_id] = song
             self.unique_song_ids.add(song_id)
 
-            # Update dictionaries for efficient retrieval
+            # update dictionaries for quick retrieval
             self.song_ids_by_artist.setdefault(song.artist, set()).add(song_id)
             self.song_ids_by_album.setdefault(song.album, set()).add(song_id)
             self.song_ids_by_genre.setdefault(song.genre, set()).add(song_id)
 
-            return True  # Song added successfully
+            return True  # song added successfully
         else:
-            return False  # Song already exists in the library
+            return False  # song already exists in the library
 
     def get_songs_by_artist(self, artist):
         return [self.songs[song_id] for song_id in self.song_ids_by_artist.get(artist, set())]
@@ -112,7 +110,6 @@ class MusicLibrary:
         return [self.songs[song_id] for song_id in self.song_ids_by_genre.get(genre, set())]
 
     def get_songs_by_title(self, title):
-        # Since titles are unique, we can directly access the song
         song_id = f"{title}_{title}"
         return [self.songs.get(song_id)]
 
@@ -120,27 +117,26 @@ class MusicLibrary:
 class Playlist:
     def __init__(self, name):
         self.name = name
-        self.song_ids = []  # List to maintain order of songs in the playlist
-        self.unique_song_ids = set()  # Set to prevent duplicate entries in the playlist
+        self.song_ids = []    # list to maintain order of songs in the playlist
+        self.unique_song_ids = set()  # set to prevent duplicate song entries in the playlist
 
     def add_song(self, song):
         if song and song.title not in self.unique_song_ids:
             self.song_ids.append(song.title)
             self.unique_song_ids.add(song.title)
-            return True  # Song added to the playlist successfully
+            return True   # song added successfully to the playlist
         else:
-            return False  # Song is either None or already in the playlist
+            return False   # song is either None or already in the playlist
 
     def remove_song(self, title):
         if title in self.unique_song_ids:
             self.song_ids.remove(title)
             self.unique_song_ids.remove(title)
-            return True  # Song removed from the playlist successfully
+            return True   # song removed successfully from the playlist
         else:
-            return False  # Song not in the playlist
+            return False   # song is not in the playlist
 
     def reorder_songs(self, new_order):
-        # Assuming new_order is a list of song titles
         self.song_ids = [
             title for title in new_order if title in self.unique_song_ids]
 
@@ -151,20 +147,43 @@ class Playlist:
 
 
 if __name__ == "__main__":
-    song1 = Song("Song 1", "Artist 1", "Album 1", "Genre 1", "3:30")
-    song2 = Song("Song 2", "Artist 2", "Album 2", "Genre 2", "4:15")
+    # Create song example
+    song1 = Song("Song 1", "Artist 1", "Album 1", "Genre 1", 2.5)
+    song2 = Song("Song 2", "Artist 2", "Album 2", "Genre 2", 3.5)
+    song3 = Song("Song 3", "Artist 3", "Album 3", "Genre 3", 4.5)
+    song4 = Song("Song 4", "Artist 4", "Album 4", "Genre 4", 5.5)
+    song5 = Song("Song 5", "Artist 5", "Album 5", "Genre 5", 6.5)
 
     music_library = MusicLibrary()
     music_library.add_song(song1)
     music_library.add_song(song2)
+    music_library.add_song(song3)
+    music_library.add_song(song4)
+    music_library.add_song(song5)
 
-    playlist1 = Playlist("My Playlist 1")
-    playlist1.add_song(song1)
-    playlist1.add_song(song2)
+    Playlist1 = Playlist("My Playlist 1")
+    Playlist1.add_song(song1)
+    Playlist1.add_song(song2)
+    Playlist1.add_song(song3)
+    Playlist2 = Playlist("My Playlist 2")
+    Playlist2.add_song(song4)
+    Playlist2.add_song(song5)
 
-    playlist1.display_playlist()
+    Playlist1.add_song(song1)  # try to add song1 again to Playlist1
+    Playlist1.remove_song(song3.title)  # remove song3 from Playlist1
+    Playlist1.display_playlist()
+    Playlist2.display_playlist()
+
+    # reorder songs in Playlist1
+    Playlist1.reorder_songs([song2.title, song1.title])
+    Playlist1.display_playlist()
 
     songs_by_artist1 = music_library.get_songs_by_artist("Artist 1")
+    songs_by_artist2 = music_library.get_songs_by_artist("Artist 2")
+
     print(f"Songs by Artist 1:")
     for song in songs_by_artist1:
-        print(f"{song.title} - {song.album}")
+        print(f"{song.title} - {song.album} - {song.genre} - length: {song.length}")
+    print(f"Songs by Artist 2:")
+    for song in songs_by_artist2:
+        print(f"{song.title} - {song.album} - {song.genre} - length: {song.length}")
